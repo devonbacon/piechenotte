@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://coopde0cbeq80"]
+
+[ext_resource type="Script" uid="uid://c5dlfjxbuw7kw" path="res://piece.gd" id="1_3makh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hkc8k"]
+radius = 16.0
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_3makh"]
+
+[node name="Piece" type="RigidBody2D"]
+input_pickable = true
+gravity_scale = 0.0
+script = ExtResource("1_3makh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_hkc8k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4.7683716e-07, -4.7683716e-07)
+scale = Vector2(31.999998, 31.999998)
+texture = SubResource("PlaceholderTexture2D_3makh")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
