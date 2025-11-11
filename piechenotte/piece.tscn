@@ -22,4 +22,7 @@ position = Vector2(4.7683716e-07, -4.7683716e-07)
 scale = Vector2(31.999998, 31.999998)
 texture = SubResource("PlaceholderTexture2D_3makh")
 
+[node name="ChargeTarget" parent="." instance=ExtResource("2_hisf2")]
+
 [connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="fire" from="ChargeTarget" to="." method="_on_charge_target_fire"]
