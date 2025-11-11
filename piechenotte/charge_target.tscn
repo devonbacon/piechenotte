@@ -4,10 +4,7 @@
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_5np5u"]
 
-[node name="ChargeTarget" type="Marker2D"]
-script = ExtResource("1_5np5u")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="ChargeTarget" type="Sprite2D"]
+scale = Vector2(5, 5)
 texture = SubResource("PlaceholderTexture2D_5np5u")
-flip_h = true
-flip_v = true
+script = ExtResource("1_5np5u")
