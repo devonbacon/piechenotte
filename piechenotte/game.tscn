@@ -1,7 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bkeilhnogc63y"]
 
-[ext_resource type="PackedScene" uid="uid://coopde0cbeq80" path="res://piece.tscn" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://b3gyw8nlfee16" path="res://game.gd" id="1_80nbo"]
 
 [node name="Game" type="Node"]
-
-[node name="Piece" parent="." instance=ExtResource("1_80nbo")]
+script = ExtResource("1_80nbo")
