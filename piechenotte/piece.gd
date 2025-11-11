@@ -1,5 +1,8 @@
 extends RigidBody2D
 
+@export var target_scene: PackedScene
+
 func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-    print("hit")
-    apply_impulse(Vector2(1,1));
+    if event.is_action_pressed("click"):
+        var target = target_scene.instantiate()
+        add_child(target)

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bh8wn0oxdfvrt"]
+
+[ext_resource type="Script" uid="uid://dg3n5hkqncwla" path="res://charge_target.gd" id="1_5np5u"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_5np5u"]
+
+[node name="ChargeTarget" type="Marker2D"]
+script = ExtResource("1_5np5u")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("PlaceholderTexture2D_5np5u")
+flip_h = true
+flip_v = true
