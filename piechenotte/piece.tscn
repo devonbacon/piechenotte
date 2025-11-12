@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://bh8wn0oxdfvrt" path="res://charge_target.tscn" id="2_hisf2"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hisf2"]
-rough = true
-bounce = 0.3
+friction = 0.1
+bounce = 0.2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hkc8k"]
 radius = 16.0
@@ -16,9 +16,10 @@ radius = 16.0
 input_pickable = true
 physics_material_override = SubResource("PhysicsMaterial_hisf2")
 gravity_scale = 0.0
+linear_damp = 1.0
+angular_damp = 1.0
 script = ExtResource("1_3makh")
 target_scene = ExtResource("2_hisf2")
-IMPULSE_SCALE = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hkc8k")
