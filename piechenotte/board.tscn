@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://lbfim0dhriqs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4mug4"]
+size = Vector2(640, 20)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_p0ybc"]
+
+[node name="Board" type="Node2D"]
+
+[node name="Top" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top"]
+position = Vector2(336, 8)
+shape = SubResource("RectangleShape2D_4mug4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Top"]
+position = Vector2(336, 8)
+scale = Vector2(640.5, 16.5)
+texture = SubResource("PlaceholderTexture2D_p0ybc")
+
+[node name="Right" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right"]
+position = Vector2(664, 336)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_4mug4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Right"]
+position = Vector2(664, 335.99997)
+rotation = 1.5707964
+scale = Vector2(640.5, 16.5)
+texture = SubResource("PlaceholderTexture2D_p0ybc")
+
+[node name="Left" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
+position = Vector2(8.249954, 336.25)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_4mug4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Left"]
+position = Vector2(8.250013, 336.25)
+rotation = 1.5707964
+scale = Vector2(640.5, 16.5)
+texture = SubResource("PlaceholderTexture2D_p0ybc")
+
+[node name="Bottom" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom"]
+position = Vector2(336, 664)
+shape = SubResource("RectangleShape2D_4mug4")
+
+[node name="Sprite2D" type="Sprite2D" parent="Bottom"]
+position = Vector2(335.99997, 664)
+scale = Vector2(640.5, 16.5)
+texture = SubResource("PlaceholderTexture2D_p0ybc")
