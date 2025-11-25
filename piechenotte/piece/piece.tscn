@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c5dlfjxbuw7kw" path="res://piece/piece.gd" id="1_3makh"]
 [ext_resource type="PackedScene" uid="uid://bh8wn0oxdfvrt" path="res://piece/charge_target.tscn" id="2_hisf2"]
-[ext_resource type="Texture2D" uid="uid://ckfv2eyccnkmg" path="res://piece/red.png" id="3_2eswf"]
+[ext_resource type="Texture2D" uid="uid://cft7eide0m7ij" path="res://piece/red.png" id="3_2eswf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hisf2"]
 friction = 0.4
@@ -19,7 +19,7 @@ linear_damp = 1.0
 angular_damp = 1.0
 script = ExtResource("1_3makh")
 target_scene = ExtResource("2_hisf2")
-IMPULSE_SCALE = 40
+IMPULSE_SCALE = 20
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hkc8k")
@@ -32,6 +32,7 @@ texture = ExtResource("3_2eswf")
 [node name="ChargeTarget" parent="." instance=ExtResource("2_hisf2")]
 position = Vector2(-2.9802322e-07, 2.9802322e-07)
 scale = Vector2(32, 32)
+MAX_DISTANCE_PX = 150
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="fire" from="ChargeTarget" to="." method="_on_charge_target_fire"]

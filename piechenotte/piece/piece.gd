@@ -4,8 +4,19 @@ extends RigidBody2D
 
 @export var IMPULSE_SCALE: int
 
-func init(pos: Vector2):
+var red = preload("res://piece/red.png")
+var green = preload("res://piece/green.png")
+var white = preload("res://piece/white.png")
+
+func init(pos: Vector2, type: String):
 	global_position = pos
+	if type == "red":
+		$Sprite2D.texture = red
+	elif type == "green":
+		$Sprite2D.texture = green
+	else:
+		$Sprite2D.texture = white
+	
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("click"):
