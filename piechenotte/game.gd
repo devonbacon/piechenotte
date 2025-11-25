@@ -1,6 +1,6 @@
 extends Node
 
-const Piece: PackedScene = preload("res://piece.tscn")
+const Piece: PackedScene = preload("res://piece/piece.tscn")
 
 @onready var window: Window = get_window()
 
@@ -25,4 +25,4 @@ func _ready():
 
 		add_child(other)
 
-	$Board.position = (window.size / 2) - Vector2i(350, 350)
+	$Board.position = (window.size / 2) - Vector2i(512, 512)
