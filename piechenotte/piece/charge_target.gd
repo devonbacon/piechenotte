@@ -16,7 +16,7 @@ func do_rotate():
 	
 	rotation = atan2(direction.y, direction.x)
 
-func set_global_pos(source: Vector2, target: Vector2):
+func set_pos(source: Vector2, target: Vector2):
 	var distance = (target - source).normalized() * clamp(target.distance_to(source), 0, MAX_DISTANCE_PX)
 
 	global_position = source + distance
@@ -24,13 +24,12 @@ func set_global_pos(source: Vector2, target: Vector2):
 func init(pos: Vector2):
 	source_pos = pos
 	enabled = true
-	do_rotate()
 	show()
 	
 
 func _process(_delta) -> void:
 	if enabled and Input.is_action_pressed("click"):
-		set_global_pos(source_pos, get_global_mouse_position())
+		set_pos(source_pos, get_global_mouse_position())
 		
 		do_rotate()
 
