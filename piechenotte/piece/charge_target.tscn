@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bh8wn0oxdfvrt"]
 
 [ext_resource type="Script" uid="uid://dg3n5hkqncwla" path="res://piece/charge_target.gd" id="1_5np5u"]
-[ext_resource type="Texture2D" uid="uid://dapgs8vr423xv" path="res://piece/target.png" id="1_nga0y"]
+[ext_resource type="Texture2D" uid="uid://dapgs8vr423xv" path="res://piece/assets/target.png" id="1_nga0y"]
 
 [node name="ChargeTarget" type="Node2D"]
 position = Vector2(9.536743e-07, 5.9604645e-07)

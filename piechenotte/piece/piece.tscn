@@ -1,25 +1,30 @@
-[gd_scene load_steps=6 format=3 uid="uid://coopde0cbeq80"]
+[gd_scene load_steps=7 format=3 uid="uid://coopde0cbeq80"]
 
 [ext_resource type="Script" uid="uid://c5dlfjxbuw7kw" path="res://piece/piece.gd" id="1_3makh"]
 [ext_resource type="PackedScene" uid="uid://bh8wn0oxdfvrt" path="res://piece/charge_target.tscn" id="2_hisf2"]
-[ext_resource type="Texture2D" uid="uid://cft7eide0m7ij" path="res://piece/red.png" id="3_2eswf"]
+[ext_resource type="Texture2D" uid="uid://cft7eide0m7ij" path="res://piece/assets/red.png" id="3_2eswf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hisf2"]
-friction = 0.4
-bounce = 0.2
+friction = 0.6
+bounce = 0.3
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hkc8k"]
 radius = 16.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_2eswf"]
+radius = 16.0
+
 [node name="Piece" type="RigidBody2D"]
+collision_layer = 3
 input_pickable = true
+mass = 0.25
 physics_material_override = SubResource("PhysicsMaterial_hisf2")
 gravity_scale = 0.0
-linear_damp = 1.0
+continuous_cd = 1
+linear_damp = 3.0
 angular_damp = 1.0
 script = ExtResource("1_3makh")
-target_scene = ExtResource("2_hisf2")
-IMPULSE_SCALE = 20
+IMPULSE_SCALE = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hkc8k")
@@ -30,9 +35,18 @@ scale = Vector2(0.12500001, 0.125)
 texture = ExtResource("3_2eswf")
 
 [node name="ChargeTarget" parent="." instance=ExtResource("2_hisf2")]
+visible = false
 position = Vector2(-2.9802322e-07, 2.9802322e-07)
 scale = Vector2(32, 32)
 MAX_DISTANCE_PX = 150
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_2eswf")
+
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="fire" from="ChargeTarget" to="." method="_on_charge_target_fire"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
