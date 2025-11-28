@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://lbfim0dhriqs"]
+[gd_scene load_steps=6 format=3 uid="uid://lbfim0dhriqs"]
+
+[ext_resource type="Script" uid="uid://c04lcq17nvddn" path="res://board/board.gd" id="1_5c38k"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4mug4"]
 
@@ -9,7 +11,11 @@ bounce = 1.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4mug4"]
 size = Vector2(1.0000001, 1)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_4mug4"]
+radius = 96.0
+
 [node name="Board" type="Node2D"]
+script = ExtResource("1_5c38k")
 
 [node name="Top" type="Sprite2D" parent="."]
 position = Vector2(511.99997, 32)
@@ -66,3 +72,29 @@ physics_material_override = SubResource("PhysicsMaterial_4mug4")
 position = Vector2(5.9604645e-08, 1.0000001)
 rotation = -3.1415925
 shape = SubResource("RectangleShape2D_4mug4")
+
+[node name="TopLeftPocket" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopLeftPocket"]
+position = Vector2(64, 64)
+shape = SubResource("CircleShape2D_4mug4")
+
+[node name="TopRightPocket" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopRightPocket"]
+position = Vector2(960, 64)
+shape = SubResource("CircleShape2D_4mug4")
+
+[node name="BottomRightPocket" type="Area2D" parent="."]
+position = Vector2(0, 896)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomRightPocket"]
+position = Vector2(960, 64)
+shape = SubResource("CircleShape2D_4mug4")
+
+[node name="BottomLeftPocket" type="Area2D" parent="."]
+position = Vector2(0, 1792)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomLeftPocket"]
+position = Vector2(64, -832)
+shape = SubResource("CircleShape2D_4mug4")

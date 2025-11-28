@@ -10,28 +10,28 @@ var enabled = false
 
 func _ready():
 	hide()
-	
-func do_rotate():
-	var direction = global_position - source_pos
-	
-	rotation = atan2(direction.y, direction.x)
-
-func set_pos(source: Vector2, target: Vector2):
-	var distance = (target - source).normalized() * clamp(target.distance_to(source), 0, MAX_DISTANCE_PX)
-
-	global_position = source + distance
 
 func init(pos: Vector2):
 	source_pos = pos
 	enabled = true
 	show()
+
+func set_pos(source: Vector2, target: Vector2):
+	var distance = (target - source).normalized() * clamp(target.distance_to(source), 0, MAX_DISTANCE_PX)
+
+	global_position = source + distance
 	
+func scale():
+	var distance = global_position.distance_to(source_pos)
+	var magnitude = lerp(.005, .01, distance / MAX_DISTANCE_PX)
+
+	$Sprite2D.scale = Vector2(magnitude, magnitude)
 
 func _process(_delta) -> void:
-	if enabled and Input.is_action_pressed("click"):
+	if enabled:
 		set_pos(source_pos, get_global_mouse_position())
-		
-		do_rotate()
+		look_at(source_pos)
+		scale()
 
 
 func _input(event):

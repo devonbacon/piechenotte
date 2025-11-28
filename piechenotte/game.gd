@@ -6,7 +6,7 @@ const Piece: PackedScene = preload("res://piece/piece.tscn")
 
 func _ready():
 	var shooter = Piece.instantiate()
-	shooter.init(window.size / 2, "white")
+	shooter.init(window.size / 2, 0)
 
 	add_child(shooter)
 
@@ -15,7 +15,7 @@ func _ready():
 
 	for i in 10:
 		var other = Piece.instantiate()
-		var color = "green" if i % 2 == 0 else "red"
+		var color = (i % 2) + 1
 		other.init((window.size / 2) + Vector2i(count_in_line * 50, 100 - 10 * line), color)
 
 		if count_in_line == line:
