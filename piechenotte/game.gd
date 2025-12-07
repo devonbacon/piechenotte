@@ -4,8 +4,7 @@ const Piece: PackedScene = preload("res://piece/piece.tscn")
 
 @onready var window: Window = get_window()
 
-var red_score = 0
-var green_score = 0
+var player_count = 4;
 
 func _ready():
 	_write_score()

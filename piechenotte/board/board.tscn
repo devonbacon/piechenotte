@@ -103,3 +103,8 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomLeftPocket"]
 position = Vector2(64, -832)
 shape = SubResource("CircleShape2D_4mug4")
+
+[node name="TopLand" type="Area2D" parent="."]
+position = Vector2(160, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopLand"]
