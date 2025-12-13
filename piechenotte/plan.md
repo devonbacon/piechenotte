@@ -2,12 +2,12 @@ Piechenotte
 
 - [] Assets
   - [] Sound
-	- [] BG Music
-	- [] Piece hit SFX
-	- [] Piece Pocketed (score) SFX
+    - [] BG Music
+    - [] Piece hit SFX
+    - [] Piece Pocketed (score) SFX
   - [] "Art"
-	- [] 1024x1024 Board PNG
-	- [] Black/White pieces
+    - [] 1024x1024 Board PNG
+    - [] Black/White pieces
 
 - [] Turns
   - [] Shooter placement
@@ -15,8 +15,8 @@ Piechenotte
 
 - [] Game setup
   - [] Piece generation
-	- [] Select piece counts
-	- [] Pick random orientation, move out in 8 directions until not colliding
+    - [] Select piece counts
+    - [] Pick random orientation, move out in 8 directions until not colliding
   - [] Select land
 
 - [] Mechanics

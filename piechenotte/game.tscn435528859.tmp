@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bkeilhnogc63y"]
+[gd_scene load_steps=4 format=3 uid="uid://bkeilhnogc63y"]
 
 [ext_resource type="Script" uid="uid://b3gyw8nlfee16" path="res://game.gd" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://lbfim0dhriqs" path="res://board/board.tscn" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://qrsqqjj4etw3" path="res://placement/place_target.tscn" id="3_feb5d"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_80nbo")
@@ -15,4 +16,4 @@ offset_right = 128.0
 offset_bottom = 127.0
 text = "test"
 
-[connection signal="clicked" from="Board" to="." method="_on_board_clicked"]
+[node name="PlaceTarget" parent="." instance=ExtResource("3_feb5d")]

@@ -4,48 +4,54 @@ const Piece: PackedScene = preload("res://piece/piece.tscn")
 
 @onready var window: Window = get_window()
 
-var player_count = 4;
+var phase := Globals.Phase.PLACE
 
 func _ready():
-	_write_score()
-	
-	var shooter = Piece.instantiate()
-	shooter.init(window.size / 2, Globals.PieceType.WHITE)
-	shooter.connect("piece_pocketed", _on_piece_pocketed)
+    update_label()
 
-	add_child(shooter)
+    $Board.init_placement(Globals.Land.TOP)
 
-	var line = 1
-	var count_in_line = 0
+    var line = 1
+    var count_in_line = 0
 
-	for i in 10:
-		var other = Piece.instantiate()
-		var color = (i % 2) + 1
-		other.init((window.size / 2) + Vector2i(count_in_line * 50, 100 - 10 * line), color)
-		other.connect("piece_pocketed", _on_piece_pocketed)
 
-		if count_in_line == line:
-			line += 1
-			count_in_line = 0
-		else:
-			count_in_line += 1
+    for i in 10:
+        var other = Piece.instantiate()
+        var color = (i % 2) + 1
+        other.init((window.size / 2) + Vector2i(count_in_line * 50, 100 - 10 * line), color)
+        other.connect("piece_pocketed", _on_piece_pocketed)
 
-		add_child(other)
+        if count_in_line == line:
+            line += 1
+            count_in_line = 0
+        else:
+            count_in_line += 1
 
-	$Board.position = (window.size / 2) - Vector2i(512, 512)
+        add_child(other)
+
+    $Board.position = (window.size / 2) - Vector2i(512, 512)
 
 
 func _on_piece_pocketed(type: Globals.PieceType) -> void:
-	_inc_score(type)
-			
-func _write_score():
-	$Label.text = "RED: " + str(red_score) + " | GREEN: " + str(green_score)
+    pass
 
-func _inc_score(type: Globals.PieceType):
-	match type:
-		Globals.PieceType.RED:
-			green_score += 1
-		Globals.PieceType.GREEN:
-			red_score += 1
-	
-	_write_score()
+func _on_stopped():
+    phase = Globals.Phase.PLACE
+    $Board.init_placement(Globals.Land.TOP)
+    update_label()
+
+func update_label():
+    $Label.text = "PLACE" if phase == Globals.Phase.PLACE else "SHOOT"
+
+func _on_board_clicked(global_pos: Vector2) -> void:
+    var shooter = Piece.instantiate()
+
+    shooter.init(global_pos, Globals.PieceType.WHITE)
+    shooter.connect("piece_pocketed", _on_piece_pocketed)
+    shooter.connect("stopped", _on_stopped)
+
+    add_child(shooter)
+
+    phase = Globals.Phase.SHOOT
+
+    update_label()
