@@ -18,6 +18,12 @@ func get_land():
     match placing_on:
         Globals.Land.TOP:
             return $TopLand
+        Globals.Land.RIGHT:
+            return $RightLand
+        Globals.Land.BOTTOM:
+            return $BottomLand
+        Globals.Land.LEFT:
+            return $LeftLand
 
 func _physics_process(_delta: float):
     var mouse_pos = get_global_mouse_position()
@@ -36,5 +42,5 @@ func _on_mouse_follower_area_entered(area: Area2D) -> void:
 
 
 func _on_mouse_follower_area_exited(area: Area2D) -> void:
-    if (area == get_land()):
+    if area == get_land():
         follower_intersecting = false

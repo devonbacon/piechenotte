@@ -6,14 +6,27 @@ const Piece: PackedScene = preload("res://piece/piece.tscn")
 
 var phase := Globals.Phase.PLACE
 
-func _ready():
+var player_turn := Globals.Land.TOP
+
+var did_pocket := false
+
+func update_label():
+    $Label.text = str(Globals.Land.keys()[player_turn]) + (" PLACE" if phase == Globals.Phase.PLACE else " SHOOT")
+
+func start_placement():
+    phase = Globals.Phase.PLACE
+    did_pocket = false
+    $Board.init_placement(player_turn)
     update_label()
 
-    $Board.init_placement(Globals.Land.TOP)
+func next_turn():
+    var next = (player_turn % 4) + 1
+    player_turn = Globals.Land[Globals.Land.keys()[next]]
+    start_placement()
 
+func start_round():
     var line = 1
     var count_in_line = 0
-
 
     for i in 10:
         var other = Piece.instantiate()
@@ -29,19 +42,25 @@ func _ready():
 
         add_child(other)
 
+    start_placement()
+
+func _ready():
+    $Board.init_placement(player_turn)
     $Board.position = (window.size / 2) - Vector2i(512, 512)
 
+    start_round()
 
 func _on_piece_pocketed(type: Globals.PieceType) -> void:
-    pass
+    if type == Globals.PieceType.WHITE:
+        next_turn()
+    else:
+        did_pocket = true
 
 func _on_stopped():
-    phase = Globals.Phase.PLACE
-    $Board.init_placement(Globals.Land.TOP)
-    update_label()
-
-func update_label():
-    $Label.text = "PLACE" if phase == Globals.Phase.PLACE else "SHOOT"
+    if did_pocket:
+        start_placement()
+    else:
+        next_turn()
 
 func _on_board_clicked(global_pos: Vector2) -> void:
     var shooter = Piece.instantiate()
