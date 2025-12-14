@@ -15,4 +15,11 @@ offset_right = 128.0
 offset_bottom = 127.0
 text = "test"
 
+[node name="ColorLabel" type="Label" parent="."]
+offset_left = 88.0
+offset_top = 136.0
+offset_right = 128.0
+offset_bottom = 159.0
+text = "test"
+
 [connection signal="clicked" from="Board" to="." method="_on_board_clicked"]

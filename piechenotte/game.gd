@@ -8,10 +8,33 @@ var phase := Globals.Phase.PLACE
 
 var player_turn := Globals.Land.TOP
 
+var team_turn := Globals.Team.V
+
 var did_pocket := false
 
+var did_drown := false
+
+var vert_team_color := Globals.PieceType.NONE
+
+func get_team_color(team: Globals.Team):
+    if vert_team_color == Globals.PieceType.NONE:
+        return Globals.PieceType.NONE
+
+    match team:
+        Globals.Team.V:
+            return vert_team_color
+        Globals.Team.H:
+            match vert_team_color:
+                Globals.PieceType.GREEN:
+                    return Globals.PieceType.RED
+                Globals.PieceType.RED:
+                    return Globals.PieceType.GREEN
+
 func update_label():
-    $Label.text = str(Globals.Land.keys()[player_turn]) + (" PLACE" if phase == Globals.Phase.PLACE else " SHOOT")
+    $Label.text = ("VERT " if team_turn == Globals.Team.V else "HORIZ ") + str(Globals.Land.keys()[player_turn]) + (" PLACE" if phase == Globals.Phase.PLACE else " SHOOT")
+    $ColorLabel.text = "V: G | H: R" if vert_team_color == Globals.PieceType.GREEN else "V: R | H: G"
+    if vert_team_color == Globals.PieceType.NONE:
+        $ColorLabel.text = "Unassigned"
 
 func start_placement():
     phase = Globals.Phase.PLACE
@@ -22,9 +45,13 @@ func start_placement():
 func next_turn():
     var next = (player_turn % 4) + 1
     player_turn = Globals.Land[Globals.Land.keys()[next]]
+    team_turn = Globals.Team.H if team_turn == Globals.Team.V else Globals.Team.V
+    did_drown = false
     start_placement()
 
 func start_round():
+    vert_team_color = Globals.PieceType.NONE
+
     var line = 1
     var count_in_line = 0
 
@@ -52,9 +79,22 @@ func _ready():
 
 func _on_piece_pocketed(type: Globals.PieceType) -> void:
     if type == Globals.PieceType.WHITE:
+        # Place additional piece
+        did_drown = true
         next_turn()
-    else:
+
+    if vert_team_color == Globals.PieceType.NONE:
+        if team_turn == Globals.Team.V:
+            vert_team_color = type
+        elif type == Globals.PieceType.GREEN:
+            vert_team_color = Globals.PieceType.RED
+        else:
+            vert_team_color = Globals.PieceType.GREEN
+
+    if get_team_color(team_turn) == type:
         did_pocket = true
+
+    update_label()
 
 func _on_stopped():
     if did_pocket:

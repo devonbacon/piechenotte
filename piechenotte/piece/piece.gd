@@ -24,7 +24,7 @@ func _on_charge_target_fire(pos: Vector2) -> void:
 
     apply_impulse(distance * IMPULSE_SCALE)
 
-    await get_tree().create_timer(.01).timeout
+    await get_tree().create_timer(.1).timeout
 
     moving = true
 
@@ -48,6 +48,6 @@ func _on_area_2d_area_entered(_area: Area2D) -> void:
     queue_free()
 
 func _physics_process(_delta: float) -> void:
-    if moving && linear_velocity.abs() < Vector2(0.1, 0.1):
+    if moving && linear_velocity.length() < 0.2:
         stopped.emit()
         queue_free()
