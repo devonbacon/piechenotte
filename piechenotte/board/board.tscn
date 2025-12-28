@@ -87,7 +87,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopLeftPocket"]
-position = Vector2(64, 64)
+position = Vector2(48, 48)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="TopRightPocket" type="Area2D" parent="."]
@@ -95,7 +95,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopRightPocket"]
-position = Vector2(1136, 64)
+position = Vector2(1152, 48)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="BottomRightPocket" type="Area2D" parent="."]
@@ -104,7 +104,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomRightPocket"]
-position = Vector2(1136, 240)
+position = Vector2(1152, 256)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="BottomLeftPocket" type="Area2D" parent="."]
@@ -113,7 +113,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomLeftPocket"]
-position = Vector2(64, -656)
+position = Vector2(48, -640)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="TopLand" type="Area2D" parent="."]

@@ -9,6 +9,7 @@ script = ExtResource("1_80nbo")
 [node name="Board" parent="." instance=ExtResource("2_e2o6t")]
 
 [node name="Label" type="Label" parent="."]
+visible = false
 offset_left = 88.0
 offset_top = 104.0
 offset_right = 128.0
@@ -16,6 +17,7 @@ offset_bottom = 127.0
 text = "test"
 
 [node name="ColorLabel" type="Label" parent="."]
+visible = false
 offset_left = 88.0
 offset_top = 136.0
 offset_right = 128.0

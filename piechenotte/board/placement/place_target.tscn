@@ -1,11 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://qrsqqjj4etw3"]
 
 [ext_resource type="Script" uid="uid://b2qr1ch8wls64" path="res://board/placement/place_target.gd" id="1_cu85u"]
-[ext_resource type="Texture2D" uid="uid://b5ny8cic62vbc" path="res://assets/white.png" id="2_uf1od"]
+[ext_resource type="Texture2D" uid="uid://brncduh435vup" path="res://assets/white.png" id="2_uf1od"]
 
 [node name="PlaceTarget" type="Node2D"]
 script = ExtResource("1_cu85u")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.125, 0.125)
 texture = ExtResource("2_uf1od")

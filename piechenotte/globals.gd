@@ -1,6 +1,6 @@
 extends Node
 
-enum PieceType { WHITE, RED, GREEN, NONE }
+enum PieceType { NONE, SHOOTER, RED, GREEN, BLACK, WHITE }
 
 enum Phase { PLACE, SHOOT }
 
