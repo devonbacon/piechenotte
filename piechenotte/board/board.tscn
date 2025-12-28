@@ -1,25 +1,37 @@
-[gd_scene load_steps=8 format=3 uid="uid://lbfim0dhriqs"]
+[gd_scene load_steps=11 format=3 uid="uid://lbfim0dhriqs"]
 
 [ext_resource type="Script" uid="uid://dou75ry1nsy8n" path="res://board/board.gd" id="1_5c38k"]
 [ext_resource type="PackedScene" uid="uid://qrsqqjj4etw3" path="res://board/placement/place_target.tscn" id="2_k4dee"]
+[ext_resource type="Texture2D" uid="uid://ca4elfn76obea" path="res://assets/board.png" id="2_vj8kq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_k4dee"]
 radius = 8.0
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4mug4"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_4mug4"]
 friction = 0.3
 bounce = 1.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eiwly"]
+size = Vector2(0.99999994, 0.9999999)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hecc7"]
+size = Vector2(1.1718751, 1.1718751)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4mug4"]
-size = Vector2(1.0000001, 1)
+size = Vector2(1.1718751, 0.3359375)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4go2t"]
+size = Vector2(0.37500006, 1.171875)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4mug4"]
 radius = 96.0
 
 [node name="Board" type="Node2D"]
 script = ExtResource("1_5c38k")
+
+[node name="BoardSprite" type="Sprite2D" parent="."]
+position = Vector2(600, 600)
+texture = ExtResource("2_vj8kq")
 
 [node name="MouseFollower" type="Area2D" parent="."]
 collision_layer = 4
@@ -30,61 +42,45 @@ shape = SubResource("CircleShape2D_k4dee")
 
 [node name="PlaceTarget" parent="." instance=ExtResource("2_k4dee")]
 
-[node name="Top" type="Sprite2D" parent="."]
-position = Vector2(511.99997, 32)
+[node name="Top" type="StaticBody2D" parent="."]
+position = Vector2(600, -12)
+scale = Vector2(1200, 24)
+physics_material_override = SubResource("PhysicsMaterial_4mug4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top"]
+position = Vector2(5.9604645e-08, 1.0000002)
+rotation = -3.1415925
+shape = SubResource("RectangleShape2D_eiwly")
+
+[node name="Left" type="StaticBody2D" parent="."]
+position = Vector2(12, -512)
+scale = Vector2(24, 1024)
+physics_material_override = SubResource("PhysicsMaterial_4mug4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
+position = Vector2(1.7881393e-07, 1.0859375)
+rotation = -3.1415925
+shape = SubResource("RectangleShape2D_hecc7")
+
+[node name="Bottom" type="StaticBody2D" parent="."]
+position = Vector2(511.99997, 928)
 scale = Vector2(1023.9999, 64)
-texture = SubResource("PlaceholderTexture2D_4mug4")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Top"]
-position = Vector2(0, -1)
 physics_material_override = SubResource("PhysicsMaterial_4mug4")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Top/StaticBody2D"]
-position = Vector2(5.9604645e-08, 1.0000001)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom"]
+position = Vector2(0.0859375, 4.0429688)
 rotation = -3.1415925
 shape = SubResource("RectangleShape2D_4mug4")
 
-[node name="Left" type="Sprite2D" parent="."]
-position = Vector2(32, 512)
+[node name="Right" type="StaticBody2D" parent="."]
+position = Vector2(992, -512)
 scale = Vector2(64, 1024)
-texture = SubResource("PlaceholderTexture2D_4mug4")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Left"]
-position = Vector2(0, -1)
 physics_material_override = SubResource("PhysicsMaterial_4mug4")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Left/StaticBody2D"]
-position = Vector2(5.9604645e-08, 1.0000001)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right"]
+position = Vector2(3.0625, 1.0859375)
 rotation = -3.1415925
-shape = SubResource("RectangleShape2D_4mug4")
-
-[node name="Bottom" type="Sprite2D" parent="."]
-position = Vector2(511.99997, 992)
-scale = Vector2(1023.9999, 64)
-texture = SubResource("PlaceholderTexture2D_4mug4")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Bottom"]
-position = Vector2(0, -1)
-physics_material_override = SubResource("PhysicsMaterial_4mug4")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom/StaticBody2D"]
-position = Vector2(5.9604645e-08, 1.0000001)
-rotation = -3.1415925
-shape = SubResource("RectangleShape2D_4mug4")
-
-[node name="Right" type="Sprite2D" parent="."]
-position = Vector2(992, 512)
-scale = Vector2(64, 1024)
-texture = SubResource("PlaceholderTexture2D_4mug4")
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Right"]
-position = Vector2(0, -1)
-physics_material_override = SubResource("PhysicsMaterial_4mug4")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Right/StaticBody2D"]
-position = Vector2(5.9604645e-08, 1.0000001)
-rotation = -3.1415925
-shape = SubResource("RectangleShape2D_4mug4")
+shape = SubResource("RectangleShape2D_4go2t")
 
 [node name="TopLeftPocket" type="Area2D" parent="."]
 collision_layer = 2
@@ -99,7 +95,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TopRightPocket"]
-position = Vector2(960, 64)
+position = Vector2(1136, 64)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="BottomRightPocket" type="Area2D" parent="."]
@@ -108,7 +104,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomRightPocket"]
-position = Vector2(960, 64)
+position = Vector2(1136, 240)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="BottomLeftPocket" type="Area2D" parent="."]
@@ -117,7 +113,7 @@ collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomLeftPocket"]
-position = Vector2(64, -832)
+position = Vector2(64, -656)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="TopLand" type="Area2D" parent="."]
@@ -126,8 +122,8 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TopLand"]
-position = Vector2(352, 38.101196)
-polygon = PackedVector2Array(-376, 33.8988, -360, 49.8988, 360, 49.8988, 376, 33.8988, 352, -6.1011996, 352, -38.1012, -352, -38.1012, -352, -6.1011996)
+position = Vector2(432, 0)
+polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
 
 [node name="RightLand" type="Area2D" parent="."]
 position = Vector2(272, 248)
@@ -136,8 +132,8 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RightLand"]
-position = Vector2(263.99994, -649.8988)
-polygon = PackedVector2Array(-375.99997, 33.898804, -359.99994, 49.898804, 360, 49.898743, 376, 33.898743, 352, -6.1012573, 352, -38.101257, -351.99997, -38.101196, -351.99997, -6.1011963)
+position = Vector2(343.99997, -864)
+polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
 
 [node name="BottomLand" type="Area2D" parent="."]
 position = Vector2(152, 128)
@@ -145,7 +141,9 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BottomLand"]
-polygon = PackedVector2Array(736, 760, 720, 744, 0, 744, -16, 760, 8, 800, 8, 832, 712, 832, 712, 800)
+position = Vector2(456, 1008)
+rotation = 3.1415927
+polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
 
 [node name="LeftLand" type="Area2D" parent="."]
 position = Vector2(-528, 248)
@@ -154,7 +152,9 @@ collision_layer = 4
 collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="LeftLand"]
-polygon = PackedVector2Array(624, -680, 640, -664.00006, 616, -624.00006, 616, -592.00006, -88.00003, -592, -88.00003, -624, -112.00003, -664, -96.00003, -680)
+position = Vector2(359.99997, -592)
+rotation = 3.1415927
+polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
 
 [connection signal="area_entered" from="MouseFollower" to="." method="_on_mouse_follower_area_entered"]
 [connection signal="area_exited" from="MouseFollower" to="." method="_on_mouse_follower_area_exited"]
