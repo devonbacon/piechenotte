@@ -4,6 +4,7 @@ signal piece_pocketed(type: Globals.PieceType)
 signal stopped
 
 @export var IMPULSE_SCALE: int
+@export var BASE_IMPULSE: int
 
 var target_scene = preload("res://piece/charge_target.tscn")
 
@@ -24,7 +25,10 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 func _on_charge_target_fire(pos: Vector2) -> void:
 	var distance = pos - global_position
 
-	apply_impulse(distance * IMPULSE_SCALE)
+	var base_impulse = Vector2(BASE_IMPULSE, BASE_IMPULSE)
+	var impulse = base_impulse + distance * IMPULSE_SCALE
+	
+	apply_impulse(impulse * -1)
 
 	await get_tree().create_timer(.1).timeout
 
@@ -33,6 +37,9 @@ func _on_charge_target_fire(pos: Vector2) -> void:
 func init(pos: Vector2, type: Globals.PieceType):
 	piece_type = type
 	global_position = pos
+	
+	add_to_group(Globals.get_type_str(type))
+	add_to_group("piece")
 
 	if type == Globals.PieceType.RED:
 		$Sprite2D.texture = red
@@ -44,9 +51,6 @@ func init(pos: Vector2, type: Globals.PieceType):
 		$Sprite2D.texture = white
 	else:
 		$Sprite2D.texture = black
-
-func on_pocketed() -> void:
-	queue_free()
 
 # Collisions masked such that we can only collide with the pockets
 func _on_area_2d_area_entered(_area: Area2D) -> void:

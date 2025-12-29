@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://lbfim0dhriqs"]
+[gd_scene load_steps=14 format=3 uid="uid://lbfim0dhriqs"]
 
 [ext_resource type="Script" uid="uid://dou75ry1nsy8n" path="res://board/board.gd" id="1_5c38k"]
 [ext_resource type="PackedScene" uid="uid://qrsqqjj4etw3" path="res://board/placement/place_target.tscn" id="2_k4dee"]
 [ext_resource type="Texture2D" uid="uid://ca4elfn76obea" path="res://assets/board.png" id="2_vj8kq"]
+[ext_resource type="Script" uid="uid://d3s2grw53a0rx" path="res://board/land.gd" id="4_eiwly"]
+[ext_resource type="Script" uid="uid://u7rxrqmuj3na" path="res://board/center_land.gd" id="5_hecc7"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_k4dee"]
-radius = 8.0
+radius = 4.0
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_4mug4"]
 friction = 0.3
@@ -15,10 +17,10 @@ bounce = 1.0
 size = Vector2(0.99999994, 0.9999999)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hecc7"]
-size = Vector2(1.1718751, 1.1718751)
+size = Vector2(1, 1.171875)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4mug4"]
-size = Vector2(1.1718751, 0.3359375)
+size = Vector2(1.171875, 0.375)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4go2t"]
 size = Vector2(0.37500006, 1.171875)
@@ -26,11 +28,15 @@ size = Vector2(0.37500006, 1.171875)
 [sub_resource type="CircleShape2D" id="CircleShape2D_4mug4"]
 radius = 96.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_vj8kq"]
+radius = 200.0
+
 [node name="Board" type="Node2D"]
 script = ExtResource("1_5c38k")
 
 [node name="BoardSprite" type="Sprite2D" parent="."]
 position = Vector2(600, 600)
+rotation = 1.5707964
 texture = ExtResource("2_vj8kq")
 
 [node name="MouseFollower" type="Area2D" parent="."]
@@ -58,7 +64,7 @@ scale = Vector2(24, 1024)
 physics_material_override = SubResource("PhysicsMaterial_4mug4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
-position = Vector2(1.7881393e-07, 1.0859375)
+position = Vector2(1.1920929e-07, 1.0859375)
 rotation = -3.1415925
 shape = SubResource("RectangleShape2D_hecc7")
 
@@ -68,7 +74,7 @@ scale = Vector2(1023.9999, 64)
 physics_material_override = SubResource("PhysicsMaterial_4mug4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom"]
-position = Vector2(0.0859375, 4.0429688)
+position = Vector2(0.0859375, 4.0625)
 rotation = -3.1415925
 shape = SubResource("RectangleShape2D_4mug4")
 
@@ -117,44 +123,51 @@ position = Vector2(48, -640)
 shape = SubResource("CircleShape2D_4mug4")
 
 [node name="TopLand" type="Area2D" parent="."]
-position = Vector2(160, 64)
+position = Vector2(600, 104)
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("4_eiwly")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TopLand"]
-position = Vector2(432, 0)
-polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
+polygon = PackedVector2Array(-464, 32, -416, 80, 416, 80, 464, 32, 440, -16, 432, -80, -432, -80, -440, -8)
 
 [node name="RightLand" type="Area2D" parent="."]
-position = Vector2(272, 248)
+position = Vector2(1104, 600)
 rotation = 1.5707964
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("4_eiwly")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="RightLand"]
-position = Vector2(343.99997, -864)
-polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
+polygon = PackedVector2Array(-464, 40, -416, 88, 416, 87.99994, 464.00006, 40, 440.00006, -8, 432.00006, -72, -432, -72, -440, -16)
 
 [node name="BottomLand" type="Area2D" parent="."]
-position = Vector2(152, 128)
+position = Vector2(600, 1104)
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("4_eiwly")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="BottomLand"]
-position = Vector2(456, 1008)
-rotation = 3.1415927
-polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
+polygon = PackedVector2Array(-416, -88, -464, -40, -440, 8, -432, 72, 432, 72, 440, 8, 464, -40, 416, -88)
 
 [node name="LeftLand" type="Area2D" parent="."]
-position = Vector2(-528, 248)
+position = Vector2(96, 600)
 rotation = 1.5707964
 collision_layer = 4
 collision_mask = 4
+script = ExtResource("4_eiwly")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="LeftLand"]
-position = Vector2(359.99997, -592)
-rotation = 3.1415927
-polygon = PackedVector2Array(-456, 72, -408, 120, 424, 120, 472, 72, 448, 24, 440, -40, -424, -40, -432, 24)
+polygon = PackedVector2Array(-440, 8.000015, -432, 72.000015, 432, 71.99998, 440, 7.999977, 464, -40.000023, 416, -88.00002, -416, -87.99999, -464, -39.999977)
+
+[node name="CenterLand" type="Area2D" parent="."]
+position = Vector2(600, 600)
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("5_hecc7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CenterLand"]
+shape = SubResource("CircleShape2D_vj8kq")
 
 [connection signal="area_entered" from="MouseFollower" to="." method="_on_mouse_follower_area_entered"]
 [connection signal="area_exited" from="MouseFollower" to="." method="_on_mouse_follower_area_exited"]

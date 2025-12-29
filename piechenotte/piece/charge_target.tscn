@@ -13,4 +13,3 @@ position = Vector2(-2.0980835e-05, -1.1444092e-05)
 rotation = -1.5707964
 scale = Vector2(0.01, 0.01)
 texture = ExtResource("1_nga0y")
-flip_v = true
