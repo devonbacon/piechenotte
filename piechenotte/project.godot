@@ -11,9 +11,8 @@ config_version=5
 [application]
 
 config/name="Piechenotte"
-run/main_scene="uid://bkeilhnogc63y"
+run/main_scene="uid://cxbhdkm3y4lfb"
 config/features=PackedStringArray("4.5", "Forward Plus")
-config/icon="res://icon.svg"
 
 [autoload]
 
@@ -46,3 +45,4 @@ common/max_physics_steps_per_frame=16
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.029506553, 0.029506562, 0.029506536, 1)

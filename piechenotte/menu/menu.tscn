@@ -1,0 +1,70 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxbhdkm3y4lfb"]
+
+[ext_resource type="Script" uid="uid://cgy08urvakjwg" path="res://menu/menu.gd" id="1_6nwqt"]
+[ext_resource type="Texture2D" uid="uid://ca4elfn76obea" path="res://assets/board.png" id="2_g18jx"]
+[ext_resource type="AudioStream" uid="uid://cg1mxb1i5mgcs" path="res://assets/loop-file-jazz-waltz-34-beat-bpm132-144689.mp3" id="3_6nwqt"]
+
+[node name="Menu" type="CanvasLayer"]
+script = ExtResource("1_6nwqt")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("2_g18jx")
+
+[node name="Label" type="Label" parent="HBoxContainer/CenterContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 128
+text = "Piechenotte"
+
+[node name="Buttons" type="CenterContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Buttons"]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+
+[node name="Start" type="Button" parent="HBoxContainer/Buttons/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Play"
+
+[node name="Options" type="Button" parent="HBoxContainer/Buttons/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Options"
+
+[node name="Exit" type="Button" parent="HBoxContainer/Buttons/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Quit"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_6nwqt")
+autoplay = true
+parameters/looping = true
+
+[connection signal="mouse_entered" from="HBoxContainer/Buttons/VBoxContainer/Start" to="." method="_on_start_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/Buttons/VBoxContainer/Start" to="." method="_on_start_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/Buttons/VBoxContainer/Start" to="." method="_on_button_pressed"]
+[connection signal="mouse_entered" from="HBoxContainer/Buttons/VBoxContainer/Options" to="." method="_on_options_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/Buttons/VBoxContainer/Options" to="." method="_on_options_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/Buttons/VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="mouse_entered" from="HBoxContainer/Buttons/VBoxContainer/Exit" to="." method="_on_exit_mouse_entered"]
+[connection signal="mouse_exited" from="HBoxContainer/Buttons/VBoxContainer/Exit" to="." method="_on_exit_mouse_exited"]
+[connection signal="pressed" from="HBoxContainer/Buttons/VBoxContainer/Exit" to="." method="_on_quit"]

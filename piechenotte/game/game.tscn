@@ -1,0 +1,118 @@
+[gd_scene load_steps=9 format=3 uid="uid://bkeilhnogc63y"]
+
+[ext_resource type="Script" uid="uid://b3gyw8nlfee16" path="res://game/game.gd" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://lbfim0dhriqs" path="res://board/board.tscn" id="2_e2o6t"]
+[ext_resource type="AudioStream" uid="uid://chwlujdtbmrti" path="res://assets/correct-choice-43861.mp3" id="3_feb5d"]
+[ext_resource type="AudioStream" uid="uid://38cgl6x4s5h4" path="res://assets/error-mistake-sound-effect-incorrect-answer-437420.mp3" id="4_fc0e3"]
+[ext_resource type="AudioStream" uid="uid://c3kcytg7ks34c" path="res://assets/jazz-cafe-crowd-319309.mp3" id="4_y36n6"]
+[ext_resource type="AudioStream" uid="uid://ctimy8d6hdl48" path="res://assets/collect-points-190037.mp3" id="5_7jktm"]
+[ext_resource type="Theme" uid="uid://mg5qxf87hmp7" path="res://assets/theme.tres" id="6_ryrav"]
+[ext_resource type="PackedScene" uid="uid://cx5h7k37v0p4j" path="res://background/Background.tscn" id="7_eow3j"]
+
+[node name="Game" type="Node"]
+script = ExtResource("1_80nbo")
+
+[node name="Background" parent="." instance=ExtResource("7_eow3j")]
+position = Vector2(600, 600)
+
+[node name="Board" parent="." instance=ExtResource("2_e2o6t")]
+
+[node name="BackgroundTalking" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_y36n6")
+volume_db = -5.0
+autoplay = true
+parameters/looping = true
+
+[node name="Pocketed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_feb5d")
+volume_db = 3.0
+
+[node name="Sunk" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_fc0e3")
+
+[node name="Points" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_7jktm")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(600, 600)
+ignore_rotation = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -230.0
+offset_right = 230.0
+offset_bottom = 59.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 40
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="BigMessage" type="Label" parent="CanvasLayer/VBoxContainer/MarginContainer/CenterContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("6_ryrav")
+text = "Next Turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="CanvasLayer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Exit"
+
+[node name="PlayerLabel" type="Label" parent="CanvasLayer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Player:"
+
+[node name="ColorLabel" type="Label" parent="CanvasLayer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Color:"
+
+[node name="BankedLabel" type="Label" parent="CanvasLayer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Winlabel" type="Label" parent="CanvasLayer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="HorizScore" type="Label" parent="CanvasLayer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="VerticalScore" type="Label" parent="CanvasLayer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+
+[node name="Debug" type="Label" parent="CanvasLayer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+
+[connection signal="clicked" from="Board" to="." method="_on_board_clicked"]
+[connection signal="pressed" from="CanvasLayer/VBoxContainer2/Button" to="." method="_on_button_pressed"]

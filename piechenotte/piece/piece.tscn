@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://coopde0cbeq80"]
+[gd_scene load_steps=10 format=3 uid="uid://coopde0cbeq80"]
 
 [ext_resource type="Script" uid="uid://c5dlfjxbuw7kw" path="res://piece/piece.gd" id="1_3makh"]
-[ext_resource type="AudioStream" uid="uid://dhfkfk5wyrtam" path="res://assets/tap-notification-180637.mp3" id="2_4wn1d"]
+[ext_resource type="AudioStream" uid="uid://0tf6syful268" path="res://assets/stiff-wooden-tap-42877.mp3" id="2_4wn1d"]
 [ext_resource type="PackedScene" uid="uid://bh8wn0oxdfvrt" path="res://piece/charge_target.tscn" id="2_hisf2"]
 [ext_resource type="Texture2D" uid="uid://cft7eide0m7ij" path="res://assets/red.png" id="3_2eswf"]
+[ext_resource type="Shader" uid="uid://bwgttq7153don" path="res://assets/outline.gdshader" id="3_ibp41"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hisf2"]
 friction = 0.0
@@ -11,6 +12,15 @@ bounce = 0.2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hkc8k"]
 radius = 24.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ibp41"]
+shader = ExtResource("3_ibp41")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/width = 3.0000001425
+shader_parameter/pattern = 0
+shader_parameter/inside = false
+shader_parameter/add_margins = true
+shader_parameter/number_of_images = Vector2(1, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2eswf"]
 radius = 24.0
@@ -29,15 +39,17 @@ linear_damp = 3.0
 angular_damp = 1.0
 script = ExtResource("1_3makh")
 IMPULSE_SCALE = 20
-BASE_IMPULSE = 100
+BASE_IMPULSE = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hkc8k")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_4wn1d")
+pitch_scale = 0.5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ibp41")
 position = Vector2(1.4305115e-06, 1.1920929e-07)
 texture = ExtResource("3_2eswf")
 

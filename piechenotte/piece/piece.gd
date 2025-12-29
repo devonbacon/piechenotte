@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 signal piece_pocketed(type: Globals.PieceType)
-signal stopped
+signal shot
 
 @export var IMPULSE_SCALE: int
 @export var BASE_IMPULSE: int
@@ -16,7 +16,7 @@ var white = preload("res://assets/white.png")
 
 var piece_type: Globals.PieceType
 
-var moving := false
+var did_shoot := false
 
 func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if piece_type == Globals.PieceType.SHOOTER and event.is_action_pressed("click"):
@@ -30,9 +30,8 @@ func _on_charge_target_fire(pos: Vector2) -> void:
 	
 	apply_impulse(impulse * -1)
 
-	await get_tree().create_timer(.1).timeout
-
-	moving = true
+	did_shoot = true
+	shot.emit()
 
 func init(pos: Vector2, type: Globals.PieceType):
 	piece_type = type
@@ -52,18 +51,16 @@ func init(pos: Vector2, type: Globals.PieceType):
 	else:
 		$Sprite2D.texture = black
 		
-	$AudioStreamPlayer.pitch_scale = randf_range(.5, 1.5)
+	$AudioStreamPlayer.pitch_scale = randf_range(1.5, 2)
 
 # Collisions masked such that we can only collide with the pockets
 func _on_area_2d_area_entered(_area: Area2D) -> void:
 	piece_pocketed.emit(piece_type)
 	queue_free()
 
-func _physics_process(_delta: float) -> void:
-	if moving && linear_velocity.length() < 0.2:
-		stopped.emit()
-		queue_free()
-
-
-func _on_body_entered(body: Node) -> void:
+func _on_body_entered(_body: Node) -> void:
 	$AudioStreamPlayer.play()
+	
+func _physics_process(_delta: float) -> void:
+	if did_shoot && linear_velocity.length() < .2:
+		queue_free()

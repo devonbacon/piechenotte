@@ -4,24 +4,19 @@ const Piece: PackedScene = preload("res://piece/piece.tscn")
 
 @onready var window: Window = get_window()
 
-var phase := Globals.Phase.PLACE
-
 var turn_idx := 0
 
 var did_pocket := false
 
 var did_drown := false
 
+var did_shoot := false
+
+var did_shoot_with_banked := false
+
 var vert_team_color := Globals.PieceType.NONE
 
-var player_to_team = {
-	Globals.Land.TOP: Globals.Team.V,
-	Globals.Land.BOTTOM: Globals.Team.V,
-	Globals.Land.RIGHT: Globals.Team.H,
-	Globals.Land.LEFT: Globals.Team.H
-}
-
-var dug_type = {
+var banked_type = {
 	Globals.Team.V: null,
 	Globals.Team.H: null
 }
@@ -31,35 +26,13 @@ var scores := {
 	Globals.Team.H: 0
 }
 
-var piece_points := {
-	Globals.PieceType.WHITE: 10,
-	Globals.PieceType.BLACK: 5,
-	Globals.PieceType.RED: 1,
-	Globals.PieceType.GREEN: 1
-}
-
-var turn_order := [
-	Globals.Land.BOTTOM,
-	Globals.Land.LEFT,
-	Globals.Land.TOP,
-	Globals.Land.RIGHT,
-]
-
 @onready var _board = $Board
 
-@export var piece_count := 14
-
-@export var white_count := 1
-
-@export var black_count := 1
-
-@export var score_limit := 30
-
 func get_team_turn():
-	return player_to_team[turn_order[turn_idx]]
+	return Globals.player_to_team[Globals.turn_order[turn_idx]]
 	
 func get_player_turn():
-	return turn_order[turn_idx]
+	return Globals.turn_order[turn_idx]
 
 func get_team_color(team: Globals.Team):
 	if vert_team_color == Globals.PieceType.NONE:
@@ -75,27 +48,40 @@ func get_team_color(team: Globals.Team):
 				Globals.PieceType.RED:
 					return Globals.PieceType.GREEN
 
-func update_label():
+func _process(_delta):
+	var player_name = Globals.player_names[Globals.turn_order[turn_idx]]
+	%PlayerLabel.text = "Player: " + player_name
+	
 	var team_turn = get_team_turn()
-	$Label.text = ("VERT " if team_turn == Globals.Team.V else "HORIZ ") + str(turn_order[turn_idx]) + (" PLACE" if phase == Globals.Phase.PLACE else " SHOOT")
-	$ColorLabel.text = "V: G | H: R" if vert_team_color == Globals.PieceType.GREEN else "V: R | H: G"
-	if vert_team_color == Globals.PieceType.NONE:
-		$ColorLabel.text = "Unassigned"
-	$ScoreLabel.text = str(dug_type) + " " + str(did_pocket)
+	var team_color = get_team_color(team_turn)
+	
+	%ColorLabel.text = "Color: " + (
+		"Unassigned" if team_color == Globals.PieceType.NONE
+		else "Green" if team_color == Globals.PieceType.GREEN
+		else "Red"
+	)
+	
+	%HorizScore.text = "Horizontal: " + str(scores[Globals.Team.H])
+	%VerticalScore.text = "Vertical: " + str(scores[Globals.Team.V])
+	%Winlabel.text = "Score to win: " + str(Globals.score_limit)
+	
+	var dug = banked_type[team_turn]
+	%BankedLabel.text = "Banked: " + str("White" if dug == Globals.PieceType.WHITE else "Black") if dug else ""
+	
+	%Debug.text = "dt: " + str(banked_type) + " dr: " + str(did_drown) + " | ct: " + str(Globals.get_pieces(get_team_turn()).size() >= Globals.piece_count)
 
 func start_placement():
 	check_round_end()
+	var player_name = Globals.player_names[Globals.turn_order[turn_idx]]
+	Globals.show_big_message(player_name, 2)
 	
-	Globals.show_big_message("Player " + str(turn_idx) + " start", 1)
-	
-	phase = Globals.Phase.PLACE
-	_board.init_placement(turn_order[turn_idx])
-	did_pocket = false
-	update_label()
+	_board.init_placement(Globals.turn_order[turn_idx])
 
-func next_turn():
-	turn_idx = (turn_idx + 1) % turn_order.size()
+func next_turn(): 
+	turn_idx = (turn_idx + 1) % Globals.turn_order.size()
 	did_drown = false
+	did_pocket = false
+	did_shoot_with_banked = false
 	start_placement()
 
 func start_round():
@@ -107,9 +93,9 @@ func start_round():
 		
 	vert_team_color = Globals.PieceType.NONE
 	
-	var center := Vector2.ZERO
+	var center := Vector2(600, 600)
 	
-	for i in range(white_count + black_count + (piece_count * 2)):
+	for i in range(Globals.white_count + Globals.black_count + (Globals.piece_count * 2)):
 
 		var piece = Piece.instantiate()
 		
@@ -118,8 +104,8 @@ func start_round():
 		var placement = center if i == 0 else center + dir
 		
 		var color = (
-			Globals.PieceType.WHITE if i < white_count
-				else Globals.PieceType.BLACK if i < (black_count + white_count)
+			Globals.PieceType.WHITE if i < Globals.white_count
+				else Globals.PieceType.BLACK if i < (Globals.black_count + Globals.white_count)
 				else Globals.PieceType.RED if i % 2 == 0 else Globals.PieceType.GREEN
 		)
 		
@@ -132,25 +118,28 @@ func start_round():
 	start_placement()
 	
 func handle_big_message(message: String, time: int):
-	$BigMessage.text = message
-	$BigMessage.show()
+	%BigMessage.text = message
+	%BigMessage.show()
 	await get_tree().create_timer(time).timeout
-	$BigMessage.hide()
+	%BigMessage.hide()
 
 func _ready():
 	Globals.bigmessage.connect(handle_big_message)
 	start_round()
 	
 func add_score(team: Globals.Team, type: Globals.PieceType, mult := 1):
-	scores[team] = scores[team] + (piece_points[type] * mult)
+	scores[team] = scores[team] + (Globals.piece_points[type] * mult)
 	$Points.play()
 	check_game_end()
-	update_label()
 	
 func check_game_end():
-	if scores[Globals.Team.V] > score_limit:
+	if scores[Globals.Team.V] > Globals.score_limit:
+		Globals.show_big_message("Vertical Team Wins!", 3)
+		await Globals.bigmessage
 		get_tree().reload_current_scene()
-	elif scores[Globals.Team.H] > score_limit:
+	elif scores[Globals.Team.H] > Globals.score_limit:
+		Globals.show_big_message("Horizontal Team Wins!", 3)
+		await Globals.bigmessage
 		get_tree().reload_current_scene()
 	
 func check_round_end():
@@ -160,11 +149,7 @@ func check_round_end():
 
 	var winning_team: Globals.Team = Globals.Team.NONE
 	
-	if greens == 0 and reds == 0:
-		# Tie, nobody gets points!
-		start_round()
-		return
-	elif greens == 0:
+	if greens == 0:
 		winning_team = Globals.Team.V if vert_team_color == Globals.PieceType.GREEN else Globals.Team.H
 		add_score(winning_team, Globals.PieceType.RED, reds)
 	elif reds == 0:
@@ -181,6 +166,8 @@ func check_round_end():
 		add_score(winning_team, Globals.PieceType.WHITE, whites)
 	if blacks > 0:
 		add_score(winning_team, Globals.PieceType.BLACK)
+		
+	Globals.show_big_message("Vertical" if winning_team == Globals.Team.V else "Horizontal" + " team wins round!", 3)
 	
 	start_round()
 
@@ -198,12 +185,13 @@ func _on_piece_pocketed(type: Globals.PieceType) -> void:
 		did_pocket = true
 		
 		# Edge case: Sinking a white/black while already dug
-		if dug_type[team_turn]:
-			add_score(team_turn, dug_type[team_turn])
+		if banked_type[team_turn]:
+			add_score(team_turn, banked_type[team_turn])
 		else:
 			$Pocketed.play()
 			
-		dug_type[team_turn] = type
+		banked_type[team_turn] = type
+		
 	else:
 		# Might need to assign a team color
 		if vert_team_color == Globals.PieceType.NONE:
@@ -220,55 +208,76 @@ func _on_piece_pocketed(type: Globals.PieceType) -> void:
 			$Pocketed.play()
 			
 			# Bury the dug piece, if any
-			if dug_type[team_turn]:
-				add_score(team_turn, dug_type[team_turn])
-				dug_type[team_turn] = Globals.PieceType.NONE
-	
-	update_label()
-	
-	if did_drown and vert_team_color != Globals.PieceType.NONE:
-		_board.init_placement(Globals.Land.CENTER)
-	elif !did_pocket and dug_type[team_turn]:
-		_board.init_placement(Globals.Land.CENTER)
-	elif !did_pocket:
-		next_turn()
+			if banked_type[team_turn]:
+				add_score(team_turn, banked_type[team_turn])
+				banked_type[team_turn] = null
+				did_shoot_with_banked = false
 
-func _on_stopped():
-	if did_pocket:
+#	If we didn't bury a banked piece, or we drowned after banking
+func should_place_banked():
+	var team_turn = get_team_turn()
+	return (did_shoot_with_banked and banked_type[team_turn]) or (banked_type[team_turn] and did_drown)
+		
+func _physics_process(_delta: float) -> void:
+	if !did_shoot:
+		return
+		
+	for piece in Globals.get_all():
+		if piece.linear_velocity.length() > .2:
+			return
+	
+	did_shoot = false
+	
+	if should_place_banked():
+		_board.init_placement(Globals.Land.CENTER)
+	elif did_pocket and !did_drown:
 		start_placement()
+	elif did_drown:
+		if Globals.get_pieces(get_team_turn()).size() >= Globals.piece_count:
+			next_turn()
+			return
+			
+		_board.init_placement(Globals.Land.CENTER)
 	else:
 		next_turn()
+	
+func _on_shot():
+	did_shoot = true
+	if banked_type[get_team_turn()]:
+		did_shoot_with_banked = true
 
 func _on_board_clicked(global_pos: Vector2) -> void:
 	var team_turn = get_team_turn()
-	# If the board emits this and we drowned, we're placing a new piece
-	if did_drown:
-		var count = get_tree().get_nodes_in_group(Globals.get_type_str(get_team_color(team_turn))).size()
-		if count < piece_count:
-			var piece = Piece.instantiate()
-			piece.init(global_pos, get_team_color(team_turn))
-			piece.connect("piece_pocketed", _on_piece_pocketed)
-			add_child(piece)
-			
-		did_drown = false
-		next_turn()
-	# Else if we had a dug_type, we're placing that type back (did not sink)
-	elif !did_pocket and dug_type[team_turn]:
+	
+	if should_place_banked():
 		var piece = Piece.instantiate()
-		piece.init(global_pos, dug_type[team_turn])
+		piece.init(global_pos, banked_type[team_turn])
 		piece.connect("piece_pocketed", _on_piece_pocketed)
 		add_child(piece)
-		dug_type[team_turn] = null
+		banked_type[team_turn] = null
+		did_shoot_with_banked = false
+		next_turn()
+	# If the board emits this and we drowned, we're placing a penalty piece
+	elif did_drown:
+		var piece = Piece.instantiate()
+		piece.init(global_pos, get_team_color(team_turn))
+		piece.connect("piece_pocketed", _on_piece_pocketed)
+		add_child(piece)
+
 		next_turn()
 	else:
 		var shooter = Piece.instantiate()
 
 		shooter.init(global_pos, Globals.PieceType.SHOOTER)
 		shooter.connect("piece_pocketed", _on_piece_pocketed)
-		shooter.connect("stopped", _on_stopped)
+		shooter.connect("shot", _on_shot)
 
 		add_child(shooter)
 
-		phase = Globals.Phase.SHOOT
+		did_pocket = false
+		did_shoot_with_banked = false
+		did_shoot = false
 
-		update_label()
+
+func _on_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://menu/menu.tscn")
