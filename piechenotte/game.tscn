@@ -14,24 +14,24 @@ piece_count = 3
 [node name="Board" parent="." instance=ExtResource("2_e2o6t")]
 
 [node name="Label" type="Label" parent="."]
-offset_left = 88.0
-offset_top = 104.0
-offset_right = 128.0
-offset_bottom = 127.0
+offset_left = -876.0
+offset_top = -297.0
+offset_right = -672.0
+offset_bottom = -238.0
 text = "test"
 
 [node name="ColorLabel" type="Label" parent="."]
-offset_left = 88.0
-offset_top = 136.0
-offset_right = 128.0
-offset_bottom = 159.0
+offset_left = -874.0
+offset_top = -42.0
+offset_right = -670.0
+offset_bottom = 17.0
 text = "test"
 
 [node name="ScoreLabel" type="Label" parent="."]
-offset_left = 88.0
-offset_top = 169.0
-offset_right = 128.0
-offset_bottom = 192.0
+offset_left = -885.0
+offset_top = 213.0
+offset_right = -681.0
+offset_bottom = 272.0
 text = "test"
 
 [node name="Pocketed" type="AudioStreamPlayer" parent="."]
@@ -44,10 +44,10 @@ stream = ExtResource("4_fc0e3")
 stream = ExtResource("5_7jktm")
 
 [node name="BigMessage" type="Label" parent="."]
-offset_left = 2.0
-offset_top = 488.0
-offset_right = 1201.0
-offset_bottom = 714.0
+offset_left = -602.0
+offset_top = -120.0
+offset_right = 597.0
+offset_bottom = 106.0
 theme = ExtResource("6_ryrav")
 text = "Next Turn"
 horizontal_alignment = 1
