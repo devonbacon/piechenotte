@@ -24,6 +24,8 @@ func init_placement(land: Globals.Land):
 	if placing_land:
 		placing_land.stop_placement()
 		
+	$AudioStreamPlayer.play()
+		
 	placing_land = get_land(land)
 	placing_land.init_placement()
 	_target.global_position = placing_land.global_position

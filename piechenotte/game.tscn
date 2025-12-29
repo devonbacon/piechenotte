@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://bkeilhnogc63y"]
+[gd_scene load_steps=7 format=3 uid="uid://bkeilhnogc63y"]
 
 [ext_resource type="Script" uid="uid://b3gyw8nlfee16" path="res://game.gd" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://lbfim0dhriqs" path="res://board/board.tscn" id="2_e2o6t"]
+[ext_resource type="AudioStream" uid="uid://chwlujdtbmrti" path="res://assets/correct-choice-43861.mp3" id="3_feb5d"]
+[ext_resource type="AudioStream" uid="uid://38cgl6x4s5h4" path="res://assets/error-mistake-sound-effect-incorrect-answer-437420.mp3" id="4_fc0e3"]
+[ext_resource type="AudioStream" uid="uid://ctimy8d6hdl48" path="res://assets/collect-points-190037.mp3" id="5_7jktm"]
+[ext_resource type="Theme" uid="uid://mg5qxf87hmp7" path="res://assets/theme.tres" id="6_ryrav"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_80nbo")
@@ -29,5 +33,26 @@ offset_top = 169.0
 offset_right = 128.0
 offset_bottom = 192.0
 text = "test"
+
+[node name="Pocketed" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_feb5d")
+
+[node name="Sunk" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_fc0e3")
+
+[node name="Points" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_7jktm")
+
+[node name="BigMessage" type="Label" parent="."]
+offset_left = 2.0
+offset_top = 488.0
+offset_right = 1201.0
+offset_bottom = 714.0
+theme = ExtResource("6_ryrav")
+text = "Next Turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Camera2D" type="Camera2D" parent="."]
 
 [connection signal="clicked" from="Board" to="." method="_on_board_clicked"]

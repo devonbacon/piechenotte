@@ -16,3 +16,8 @@ enum Phase { PLACE, SHOOT }
 enum Land { NONE, TOP, RIGHT, BOTTOM, LEFT, CENTER }
 
 enum Team { V, H, NONE }
+
+signal bigmessage(message: String, time: int)
+
+func show_big_message(message: String, time: int):
+	bigmessage.emit(message, time)

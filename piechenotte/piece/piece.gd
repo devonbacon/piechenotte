@@ -51,6 +51,8 @@ func init(pos: Vector2, type: Globals.PieceType):
 		$Sprite2D.texture = white
 	else:
 		$Sprite2D.texture = black
+		
+	$AudioStreamPlayer.pitch_scale = randf_range(.5, 1.5)
 
 # Collisions masked such that we can only collide with the pockets
 func _on_area_2d_area_entered(_area: Area2D) -> void:
@@ -61,3 +63,7 @@ func _physics_process(_delta: float) -> void:
 	if moving && linear_velocity.length() < 0.2:
 		stopped.emit()
 		queue_free()
+
+
+func _on_body_entered(body: Node) -> void:
+	$AudioStreamPlayer.play()

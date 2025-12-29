@@ -15,7 +15,6 @@ func _draw():
 	if is_placing:
 		draw_circle(Vector2.ZERO, 200, Color.WHITE, false, 10)
 
-
 var time := 0.5
 var end := .25
 

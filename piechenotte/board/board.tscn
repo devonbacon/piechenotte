@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://lbfim0dhriqs"]
+[gd_scene load_steps=15 format=3 uid="uid://lbfim0dhriqs"]
 
 [ext_resource type="Script" uid="uid://dou75ry1nsy8n" path="res://board/board.gd" id="1_5c38k"]
 [ext_resource type="PackedScene" uid="uid://qrsqqjj4etw3" path="res://board/placement/place_target.tscn" id="2_k4dee"]
 [ext_resource type="Texture2D" uid="uid://ca4elfn76obea" path="res://assets/board.png" id="2_vj8kq"]
 [ext_resource type="Script" uid="uid://d3s2grw53a0rx" path="res://board/land.gd" id="4_eiwly"]
 [ext_resource type="Script" uid="uid://u7rxrqmuj3na" path="res://board/center_land.gd" id="5_hecc7"]
+[ext_resource type="AudioStream" uid="uid://c8cg7hvxt8lym" path="res://assets/ping-82822.mp3" id="6_4go2t"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_k4dee"]
 radius = 4.0
@@ -23,7 +24,7 @@ size = Vector2(1, 1.171875)
 size = Vector2(1.171875, 0.375)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4go2t"]
-size = Vector2(0.37500006, 1.171875)
+size = Vector2(0.375, 1.171875)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4mug4"]
 radius = 96.0
@@ -32,6 +33,7 @@ radius = 96.0
 radius = 200.0
 
 [node name="Board" type="Node2D"]
+position = Vector2(-600, -600)
 script = ExtResource("1_5c38k")
 
 [node name="BoardSprite" type="Sprite2D" parent="."]
@@ -64,7 +66,7 @@ scale = Vector2(24, 1024)
 physics_material_override = SubResource("PhysicsMaterial_4mug4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
-position = Vector2(1.1920929e-07, 1.0859375)
+position = Vector2(6.4074993e-07, 1.0859375)
 rotation = -3.1415925
 shape = SubResource("RectangleShape2D_hecc7")
 
@@ -85,7 +87,6 @@ physics_material_override = SubResource("PhysicsMaterial_4mug4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Right"]
 position = Vector2(3.0625, 1.0859375)
-rotation = -3.1415925
 shape = SubResource("RectangleShape2D_4go2t")
 
 [node name="TopLeftPocket" type="Area2D" parent="."]
@@ -168,6 +169,9 @@ script = ExtResource("5_hecc7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CenterLand"]
 shape = SubResource("CircleShape2D_vj8kq")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_4go2t")
 
 [connection signal="area_entered" from="MouseFollower" to="." method="_on_mouse_follower_area_entered"]
 [connection signal="area_exited" from="MouseFollower" to="." method="_on_mouse_follower_area_exited"]

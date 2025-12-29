@@ -39,3 +39,6 @@ func _input(event):
 		fire.emit(global_position)
 		enabled = false
 		hide()
+		$AudioStreamPlayer.play()
+		await get_tree().create_timer(.25).timeout
+		$AudioStreamPlayer.stop()

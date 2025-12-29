@@ -81,14 +81,16 @@ func update_label():
 	$ColorLabel.text = "V: G | H: R" if vert_team_color == Globals.PieceType.GREEN else "V: R | H: G"
 	if vert_team_color == Globals.PieceType.NONE:
 		$ColorLabel.text = "Unassigned"
-	$ScoreLabel.text = "V: " + str(scores[Globals.Team.V]) + " | H: " + str(scores[Globals.Team.H])
+	$ScoreLabel.text = str(dug_type) + " " + str(did_pocket)
 
 func start_placement():
 	check_round_end()
 	
+	Globals.show_big_message("Player " + str(turn_idx) + " start", 1)
+	
 	phase = Globals.Phase.PLACE
-	did_pocket = false
 	_board.init_placement(turn_order[turn_idx])
+	did_pocket = false
 	update_label()
 
 func next_turn():
@@ -105,7 +107,7 @@ func start_round():
 		
 	vert_team_color = Globals.PieceType.NONE
 	
-	var center := Vector2(window.size / 2)
+	var center := Vector2.ZERO
 	
 	for i in range(white_count + black_count + (piece_count * 2)):
 
@@ -128,23 +130,27 @@ func start_round():
 		add_child(piece)
 
 	start_placement()
+	
+func handle_big_message(message: String, time: int):
+	$BigMessage.text = message
+	$BigMessage.show()
+	await get_tree().create_timer(time).timeout
+	$BigMessage.hide()
 
 func _ready():
-	_board.init_placement(turn_order[turn_idx])
-	_board.position = (window.size / 2) - (Vector2i(1200, 1200) / 2)
+	Globals.bigmessage.connect(handle_big_message)
 	start_round()
 	
 func add_score(team: Globals.Team, type: Globals.PieceType, mult := 1):
 	scores[team] = scores[team] + (piece_points[type] * mult)
+	$Points.play()
 	check_game_end()
 	update_label()
 	
 func check_game_end():
 	if scores[Globals.Team.V] > score_limit:
-		print("Game over! Vertical wins")
 		get_tree().reload_current_scene()
 	elif scores[Globals.Team.H] > score_limit:
-		print("Game over! Horizontal wins")
 		get_tree().reload_current_scene()
 	
 func check_round_end():
@@ -184,8 +190,9 @@ func _on_piece_pocketed(type: Globals.PieceType) -> void:
 	if type == Globals.PieceType.SHOOTER:
 		# Place additional piece
 		did_drown = true
+		$Sunk.play()
 
-	# If we sink a white or a black, need to mark that we dug a hole	
+	# If we sink a white or a black, need to mark that we dug a hole
 	elif type == Globals.PieceType.WHITE or type == Globals.PieceType.BLACK:
 		# Mark as pocketed
 		did_pocket = true
@@ -193,7 +200,9 @@ func _on_piece_pocketed(type: Globals.PieceType) -> void:
 		# Edge case: Sinking a white/black while already dug
 		if dug_type[team_turn]:
 			add_score(team_turn, dug_type[team_turn])
-		
+		else:
+			$Pocketed.play()
+			
 		dug_type[team_turn] = type
 	else:
 		# Might need to assign a team color
@@ -208,6 +217,7 @@ func _on_piece_pocketed(type: Globals.PieceType) -> void:
 		if get_team_color(team_turn) == type:
 			# Pocketed the right color
 			did_pocket = true
+			$Pocketed.play()
 			
 			# Bury the dug piece, if any
 			if dug_type[team_turn]:
