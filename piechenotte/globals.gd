@@ -45,7 +45,7 @@ func reset():
 	Globals.score_limit = 30
 	Globals.white_count = 1
 	Globals.black_count = 1
-	Globals.piece_count = 2
+	Globals.piece_count = 14
 	Globals.player_names[Globals.Land.BOTTOM] = "Player One"
 	Globals.player_names[Globals.Land.TOP] = "Player Three"
 	Globals.player_names[Globals.Land.RIGHT] = "Player Two"

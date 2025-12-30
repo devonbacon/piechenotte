@@ -38,7 +38,7 @@ max_contacts_reported = 1
 linear_damp = 3.0
 angular_damp = 1.0
 script = ExtResource("1_3makh")
-IMPULSE_SCALE = 5
+IMPULSE_SCALE = 4
 BASE_IMPULSE = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -57,7 +57,6 @@ texture = ExtResource("3_2eswf")
 visible = false
 position = Vector2(-2.9802322e-07, 2.9802322e-07)
 scale = Vector2(32, 32)
-MAX_DISTANCE_PX = 150
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 0

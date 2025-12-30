@@ -2,7 +2,7 @@ extends Node2D
 
 signal fire
 
-@export var MAX_DISTANCE_PX = 100
+var MAX_DISTANCE = 300
 
 var source_pos: Vector2
 
@@ -17,13 +17,13 @@ func init(pos: Vector2):
 	show()
 
 func set_pos(source: Vector2, target: Vector2):
-	var distance = (target - source).normalized() * clamp(target.distance_to(source), 0, MAX_DISTANCE_PX)
+	var distance = (target - source).normalized() * clamp(target.distance_to(source), 0, MAX_DISTANCE)
 
 	global_position = source + distance
 	
 func scale():
 	var distance = global_position.distance_to(source_pos)
-	var magnitude = lerp(.01, .02, distance / MAX_DISTANCE_PX)
+	var magnitude = lerp(.01, .02, distance / MAX_DISTANCE)
 
 	$Sprite2D.scale = Vector2(magnitude, magnitude)
 

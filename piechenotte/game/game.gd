@@ -70,8 +70,6 @@ func _process(_delta):
 	var dug = banked_type[team_turn]
 	%BankedLabel.text = "Banked: " + str("White" if dug == Globals.PieceType.WHITE else "Black") if dug else ""
 	
-	%Debug.text = "pp: " + ((Globals.PieceType.keys()[placing_piece]) if placing_piece else "n/a") + "\ndid_pocket: " + str(did_pocket)
-
 func place_piece(land: Globals.Land, piece: Globals.PieceType):
 	_board.init_placement(land)
 	placing_piece = piece
@@ -239,6 +237,7 @@ func _physics_process(_delta: float) -> void:
 	
 	if should_place_banked():
 		place_piece(Globals.Land.CENTER, banked_type[get_team_turn()])
+		banked_type[get_team_turn()] = null
 	elif did_pocket and !did_drown:
 		start_placement()
 	elif did_drown:

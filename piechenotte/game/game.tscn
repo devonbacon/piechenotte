@@ -109,10 +109,5 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 
-[node name="Debug" type="Label" parent="CanvasLayer/VBoxContainer3"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 16
-
 [connection signal="clicked" from="Board" to="." method="_on_board_clicked"]
 [connection signal="pressed" from="CanvasLayer/VBoxContainer2/Button" to="." method="_on_button_pressed"]

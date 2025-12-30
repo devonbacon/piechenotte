@@ -7,7 +7,6 @@
 [node name="ChargeTarget" type="Node2D"]
 position = Vector2(9.536743e-07, 5.9604645e-07)
 script = ExtResource("1_5np5u")
-MAX_DISTANCE_PX = 200
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 3.1415927
