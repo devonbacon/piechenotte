@@ -13,6 +13,8 @@ config_version=5
 config/name="Piechenotte"
 run/main_scene="uid://cxbhdkm3y4lfb"
 config/features=PackedStringArray("4.5", "Forward Plus")
+boot_splash/image="uid://ca4elfn76obea"
+boot_splash/minimum_display_time=1000
 
 [autoload]
 
@@ -45,4 +47,5 @@ common/max_physics_steps_per_frame=16
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.029506553, 0.029506562, 0.029506536, 1)
