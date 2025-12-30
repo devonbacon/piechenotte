@@ -14,6 +14,8 @@ var did_shoot := false
 
 var did_shoot_with_banked := false
 
+var placing_piece = null
+
 var vert_team_color := Globals.PieceType.NONE
 
 var banked_type = {
@@ -68,20 +70,25 @@ func _process(_delta):
 	var dug = banked_type[team_turn]
 	%BankedLabel.text = "Banked: " + str("White" if dug == Globals.PieceType.WHITE else "Black") if dug else ""
 	
-	%Debug.text = "dt: " + str(banked_type) + " dr: " + str(did_drown) + " | ct: " + str(Globals.get_pieces(get_team_turn()).size() >= Globals.piece_count)
+	%Debug.text = "pp: " + ((Globals.PieceType.keys()[placing_piece]) if placing_piece else "n/a") + "\ndid_pocket: " + str(did_pocket)
+
+func place_piece(land: Globals.Land, piece: Globals.PieceType):
+	_board.init_placement(land)
+	placing_piece = piece
 
 func start_placement():
 	check_round_end()
 	var player_name = Globals.player_names[Globals.turn_order[turn_idx]]
 	Globals.show_big_message(player_name, 2)
 	
-	_board.init_placement(Globals.turn_order[turn_idx])
+	place_piece(Globals.turn_order[turn_idx], Globals.PieceType.SHOOTER)
 
 func next_turn(): 
 	turn_idx = (turn_idx + 1) % Globals.turn_order.size()
 	did_drown = false
 	did_pocket = false
 	did_shoot_with_banked = false
+	banked_type[get_team_turn()] = null
 	start_placement()
 
 func start_round():
@@ -135,12 +142,12 @@ func add_score(team: Globals.Team, type: Globals.PieceType, mult := 1):
 func check_game_end():
 	if scores[Globals.Team.V] > Globals.score_limit:
 		Globals.show_big_message("Vertical Team Wins!", 3)
-		await Globals.bigmessage
-		get_tree().reload_current_scene()
+		await Globals.bigmessagedone
+		get_tree().change_scene_to_file("res://menu/menu.tscn")
 	elif scores[Globals.Team.H] > Globals.score_limit:
 		Globals.show_big_message("Horizontal Team Wins!", 3)
-		await Globals.bigmessage
-		get_tree().reload_current_scene()
+		await Globals.bigmessagedone
+		get_tree().change_scene_to_file("res://menu/menu.tscn")
 	
 func check_round_end():
 	# check if either team won
@@ -169,6 +176,8 @@ func check_round_end():
 		
 	Globals.show_big_message("Vertical" if winning_team == Globals.Team.V else "Horizontal" + " team wins round!", 3)
 	
+	await Globals.bigmessagedone
+	
 	start_round()
 
 func _on_piece_pocketed(type: Globals.PieceType) -> void:
@@ -179,21 +188,21 @@ func _on_piece_pocketed(type: Globals.PieceType) -> void:
 		did_drown = true
 		$Sunk.play()
 
-	# If we sink a white or a black, need to mark that we dug a hole
+	# If we sink a white or a black, bank the piece
 	elif type == Globals.PieceType.WHITE or type == Globals.PieceType.BLACK:
 		# Mark as pocketed
 		did_pocket = true
 		
-		# Edge case: Sinking a white/black while already dug
+		# Edge case: Cash in already-banked piece
 		if banked_type[team_turn]:
 			add_score(team_turn, banked_type[team_turn])
-		else:
-			$Pocketed.play()
+			
+		$Pocketed.play()
 			
 		banked_type[team_turn] = type
 		
 	else:
-		# Might need to assign a team color
+		# Assign team colors, if necessary
 		if vert_team_color == Globals.PieceType.NONE:
 			if team_turn == Globals.Team.V:
 				vert_team_color = type
@@ -207,7 +216,7 @@ func _on_piece_pocketed(type: Globals.PieceType) -> void:
 			did_pocket = true
 			$Pocketed.play()
 			
-			# Bury the dug piece, if any
+			# Cash in the banked piece, if any
 			if banked_type[team_turn]:
 				add_score(team_turn, banked_type[team_turn])
 				banked_type[team_turn] = null
@@ -229,15 +238,15 @@ func _physics_process(_delta: float) -> void:
 	did_shoot = false
 	
 	if should_place_banked():
-		_board.init_placement(Globals.Land.CENTER)
+		place_piece(Globals.Land.CENTER, banked_type[get_team_turn()])
 	elif did_pocket and !did_drown:
 		start_placement()
 	elif did_drown:
-		if Globals.get_pieces(get_team_turn()).size() >= Globals.piece_count:
+		var team_color = get_team_color(get_team_turn())
+		if team_color == Globals.PieceType.NONE or Globals.get_pieces(team_color).size() >= Globals.piece_count:
 			next_turn()
-			return
-			
-		_board.init_placement(Globals.Land.CENTER)
+		else:
+			place_piece(Globals.Land.CENTER, get_team_color(get_team_turn()))
 	else:
 		next_turn()
 	
@@ -247,37 +256,25 @@ func _on_shot():
 		did_shoot_with_banked = true
 
 func _on_board_clicked(global_pos: Vector2) -> void:
-	var team_turn = get_team_turn()
-	
-	if should_place_banked():
-		var piece = Piece.instantiate()
-		piece.init(global_pos, banked_type[team_turn])
-		piece.connect("piece_pocketed", _on_piece_pocketed)
-		add_child(piece)
-		banked_type[team_turn] = null
-		did_shoot_with_banked = false
-		next_turn()
-	# If the board emits this and we drowned, we're placing a penalty piece
-	elif did_drown:
-		var piece = Piece.instantiate()
-		piece.init(global_pos, get_team_color(team_turn))
-		piece.connect("piece_pocketed", _on_piece_pocketed)
-		add_child(piece)
-
-		next_turn()
-	else:
+	if placing_piece == Globals.PieceType.SHOOTER:
+		placing_piece = null
 		var shooter = Piece.instantiate()
 
 		shooter.init(global_pos, Globals.PieceType.SHOOTER)
 		shooter.connect("piece_pocketed", _on_piece_pocketed)
 		shooter.connect("shot", _on_shot)
+		
+		did_pocket = false
 
 		add_child(shooter)
-
-		did_pocket = false
-		did_shoot_with_banked = false
-		did_shoot = false
-
+	elif placing_piece:
+		var piece = Piece.instantiate()
+		piece.init(global_pos, placing_piece)
+		piece.connect("piece_pocketed", _on_piece_pocketed)
+		add_child(piece)
+		
+		placing_piece = null
+		next_turn()
 
 func _on_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://menu/menu.tscn")

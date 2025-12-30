@@ -19,8 +19,12 @@ enum Team { V, H, NONE }
 
 signal bigmessage(message: String, time: int)
 
+signal bigmessagedone
+
 func show_big_message(message: String, time: int):
 	bigmessage.emit(message, time)
+	await get_tree().create_timer(time).timeout
+	bigmessagedone.emit()
 
 var piece_count: int
 

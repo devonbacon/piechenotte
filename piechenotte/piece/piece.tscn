@@ -38,8 +38,8 @@ max_contacts_reported = 1
 linear_damp = 3.0
 angular_damp = 1.0
 script = ExtResource("1_3makh")
-IMPULSE_SCALE = 20
-BASE_IMPULSE = 30
+IMPULSE_SCALE = 5
+BASE_IMPULSE = 10
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_hkc8k")

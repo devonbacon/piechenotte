@@ -23,7 +23,7 @@ func set_pos(source: Vector2, target: Vector2):
 	
 func scale():
 	var distance = global_position.distance_to(source_pos)
-	var magnitude = lerp(.005, .01, distance / MAX_DISTANCE_PX)
+	var magnitude = lerp(.01, .02, distance / MAX_DISTANCE_PX)
 
 	$Sprite2D.scale = Vector2(magnitude, magnitude)
 

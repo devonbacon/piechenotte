@@ -28,7 +28,7 @@ func _on_charge_target_fire(pos: Vector2) -> void:
 	var base_impulse = Vector2(BASE_IMPULSE, BASE_IMPULSE)
 	var impulse = base_impulse + distance * IMPULSE_SCALE
 	
-	apply_impulse(impulse * -1)
+	apply_central_impulse(impulse * -1)
 
 	did_shoot = true
 	shot.emit()
