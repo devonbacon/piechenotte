@@ -1,9 +1,17 @@
 extends CanvasLayer
 
-func _on_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://menu/menu.tscn")
+signal exit
+
+func do_hide():
+	%OptsContainer.hide()
 	
-func _ready():
+func do_show():
+	%OptsContainer.show()
+
+func _on_button_pressed() -> void:
+	exit.emit()
+	
+func update():
 	%PieceCount.value = Globals.piece_count
 	%Score.value = Globals.score_limit
 	%WhiteCount.value = Globals.white_count
@@ -12,6 +20,9 @@ func _ready():
 	%RightName.text = Globals.player_names[Globals.Land.RIGHT]
 	%LeftName.text = Globals.player_names[Globals.Land.LEFT]
 	%TopName.text = Globals.player_names[Globals.Land.TOP]
+	
+func _ready():
+	update()
 
 func _process(_delta):
 	%PCLabel.text = "Piece Count (" + str(Globals.piece_count) + ")"
@@ -33,6 +44,7 @@ func _on_black_count_value_changed(value: float) -> void:
 
 func _on_reset_pressed() -> void:
 	Globals.reset()
+	update()
 
 func _on_bottom_name_text_changed() -> void:
 	Globals.player_names[Globals.Land.BOTTOM] = %BottomName.text

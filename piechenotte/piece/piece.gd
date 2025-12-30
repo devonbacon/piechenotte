@@ -3,7 +3,8 @@ extends RigidBody2D
 signal piece_pocketed(type: Globals.PieceType)
 signal shot
 
-@export var IMPULSE_SCALE: int
+var MAX_DISTANCE := 300
+@export var MAX_ADDTL_IMPULSE: int
 @export var BASE_IMPULSE: int
 
 var target_scene = preload("res://piece/charge_target.tscn")
@@ -22,13 +23,9 @@ func _on_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> voi
 	if piece_type == Globals.PieceType.SHOOTER and event.is_action_pressed("click"):
 		$ChargeTarget.init(global_position)
 
-func _on_charge_target_fire(pos: Vector2) -> void:
-	var distance = pos - global_position
-
-	var base_impulse = Vector2(BASE_IMPULSE, BASE_IMPULSE)
-	var impulse = base_impulse + distance * IMPULSE_SCALE
-	
-	apply_central_impulse(impulse * -1)
+func _on_charge_target_fire(pull_pos: Vector2) -> void:
+	var local_impulse = -to_local(pull_pos)
+	apply_central_impulse(local_impulse)
 
 	did_shoot = true
 	shot.emit()

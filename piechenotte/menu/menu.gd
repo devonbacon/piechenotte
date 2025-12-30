@@ -10,7 +10,8 @@ func _on_button_pressed() -> void:
 
 
 func _on_options_pressed() -> void:
-	get_tree().change_scene_to_file("res://options/options.tscn")
+	%MainMenu.hide()
+	$Options.do_show()
 
 
 func _on_quit() -> void:
@@ -20,6 +21,7 @@ func _ready():
 	%Start.icon = black
 	%Options.icon = black
 	%Exit.icon = black
+	$Options.do_hide()
 
 func _on_start_mouse_entered() -> void:
 	%Start.icon = green
@@ -42,3 +44,8 @@ func _on_exit_mouse_entered() -> void:
 
 func _on_exit_mouse_exited() -> void:
 	%Exit.icon = black
+
+
+func _on_options_exit() -> void:
+	$Options.do_hide()
+	%MainMenu.show()

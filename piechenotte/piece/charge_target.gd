@@ -1,6 +1,6 @@
 extends Node2D
 
-signal fire
+signal fire(pos: Vector2)
 
 var MAX_DISTANCE = 300
 
