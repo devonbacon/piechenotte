@@ -50,6 +50,12 @@ func get_team_color(team: Globals.Team):
 				Globals.PieceType.RED:
 					return Globals.PieceType.GREEN
 
+func _handle_window_size_change():
+	var size = get_tree().root.size
+	var visible_pct = size.y / 1700
+	var zoom = lerp(.6, 1.0, clampf(visible_pct, 0, 1))
+	%Camera2D.zoom = Vector2(zoom, zoom)
+
 func _process(_delta):
 	var player_name = Globals.player_names[Globals.turn_order[turn_idx]]
 	%PlayerLabel.text = "Player: " + player_name
@@ -63,8 +69,10 @@ func _process(_delta):
 		else "Red"
 	)
 	
-	%HorizScore.text = "Horizontal: " + str(scores[Globals.Team.H])
-	%VerticalScore.text = "Vertical: " + str(scores[Globals.Team.V])
+	var horiz_name = Globals.player_names[Globals.Land.RIGHT] + " and " + Globals.player_names[Globals.Land.LEFT]
+	var vert_name = Globals.player_names[Globals.Land.BOTTOM] + " and " + Globals.player_names[Globals.Land.TOP]
+	%HorizScore.text = horiz_name + ": " + str(scores[Globals.Team.H])
+	%VerticalScore.text = vert_name + ": " + str(scores[Globals.Team.V])
 	%Winlabel.text = "Score to win: " + str(Globals.score_limit)
 	
 	var dug = banked_type[team_turn]
@@ -129,6 +137,7 @@ func handle_big_message(message: String, time: int):
 	%BigMessage.hide()
 
 func _ready():
+	_handle_window_size_change()
 	Globals.bigmessage.connect(handle_big_message)
 	start_round()
 	
