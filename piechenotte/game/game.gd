@@ -52,8 +52,9 @@ func get_team_color(team: Globals.Team):
 
 func _handle_window_size_change():
 	var size = get_tree().root.size
-	var visible_pct = size.y / 1700
-	var zoom = lerp(.6, 1.0, clampf(visible_pct, 0, 1))
+	var visible_pct = float(size.y) / float(1700)
+	var zoom = clampf(visible_pct, .6, 1)
+	print(zoom, " | ", visible_pct)
 	%Camera2D.zoom = Vector2(zoom, zoom)
 
 func _process(_delta):
