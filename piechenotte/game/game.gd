@@ -63,10 +63,13 @@ func _process(_delta):
 	var team_turn = get_team_turn()
 	var team_color = get_team_color(team_turn)
 	
+	var green_name = "Blue" if Globals.colorblind_mode else "Green"
+	var red_name = "Yellow" if Globals.colorblind_mode else "Red"
+	
 	%ColorLabel.text = "Color: " + (
 		"Unassigned" if team_color == Globals.PieceType.NONE
-		else "Green" if team_color == Globals.PieceType.GREEN
-		else "Red"
+		else green_name if team_color == Globals.PieceType.GREEN
+		else red_name
 	)
 	
 	var horiz_name = Globals.player_names[Globals.Land.RIGHT] + " and " + Globals.player_names[Globals.Land.LEFT]

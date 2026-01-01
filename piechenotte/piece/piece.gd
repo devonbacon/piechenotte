@@ -11,6 +11,8 @@ var target_scene = preload("res://piece/charge_target.tscn")
 
 var red = preload("res://assets/red.png")
 var green = preload("res://assets/green.png")
+var yellow = preload("res://assets/yellow.png")
+var blue = preload("res://assets/blue.png")
 var shooter = preload("res://assets/shooter.png")
 var black = preload("res://assets/black.png")
 var white = preload("res://assets/white.png")
@@ -38,9 +40,9 @@ func init(pos: Vector2, type: Globals.PieceType):
 	add_to_group("piece")
 
 	if type == Globals.PieceType.RED:
-		$Sprite2D.texture = red
+		$Sprite2D.texture = yellow if Globals.colorblind_mode else red
 	elif type == Globals.PieceType.GREEN:
-		$Sprite2D.texture = green
+		$Sprite2D.texture = blue if Globals.colorblind_mode else green
 	elif type == Globals.PieceType.SHOOTER:
 		$Sprite2D.texture = shooter
 	elif type == Globals.PieceType.WHITE:

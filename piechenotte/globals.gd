@@ -34,43 +34,46 @@ var black_count: int
 
 var score_limit: int
 
+var colorblind_mode: bool
+
 var player_names := {
-	Globals.Land.TOP: "",
-	Globals.Land.BOTTOM: "",
-	Globals.Land.RIGHT: "",
-	Globals.Land.LEFT: ""
+	Land.TOP: "",
+	Land.BOTTOM: "",
+	Land.RIGHT: "",
+	Land.LEFT: ""
 }
 
 func reset():
-	Globals.score_limit = 30
-	Globals.white_count = 1
-	Globals.black_count = 1
-	Globals.piece_count = 14
-	Globals.player_names[Globals.Land.BOTTOM] = "Player One"
-	Globals.player_names[Globals.Land.TOP] = "Player Three"
-	Globals.player_names[Globals.Land.RIGHT] = "Player Two"
-	Globals.player_names[Globals.Land.LEFT] = "Player Four"
+	score_limit = 30
+	white_count = 1
+	black_count = 1
+	piece_count = 14
+	player_names[Land.BOTTOM] = "Player One"
+	player_names[Land.TOP] = "Player Three"
+	player_names[Land.RIGHT] = "Player Two"
+	player_names[Land.LEFT] = "Player Four"
+	colorblind_mode = false
 
 func _ready():
 	reset()
 	
 var player_to_team = {
-	Globals.Land.TOP: Globals.Team.V,
-	Globals.Land.BOTTOM: Globals.Team.V,
-	Globals.Land.RIGHT: Globals.Team.H,
-	Globals.Land.LEFT: Globals.Team.H
+	Land.TOP: Team.V,
+	Land.BOTTOM: Team.V,
+	Land.RIGHT: Team.H,
+	Land.LEFT: Team.H
 }
 
 var piece_points := {
-	Globals.PieceType.WHITE: 10,
-	Globals.PieceType.BLACK: 5,
-	Globals.PieceType.RED: 1,
-	Globals.PieceType.GREEN: 1
+	PieceType.WHITE: 10,
+	PieceType.BLACK: 5,
+	PieceType.RED: 1,
+	PieceType.GREEN: 1
 }
 
 var turn_order := [
-	Globals.Land.BOTTOM,
-	Globals.Land.RIGHT,
-	Globals.Land.TOP,
-	Globals.Land.LEFT,
+	Land.BOTTOM,
+	Land.RIGHT,
+	Land.TOP,
+	Land.LEFT,
 ]

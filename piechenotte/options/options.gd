@@ -2,6 +2,9 @@ extends CanvasLayer
 
 signal exit
 
+var red = preload("res://assets/red.png")
+var green = preload("res://assets/green.png")
+
 func do_hide():
 	%OptsContainer.hide()
 	
@@ -20,6 +23,8 @@ func update():
 	%RightName.text = Globals.player_names[Globals.Land.RIGHT]
 	%LeftName.text = Globals.player_names[Globals.Land.LEFT]
 	%TopName.text = Globals.player_names[Globals.Land.TOP]
+	%Colorblind.button_pressed = Globals.colorblind_mode
+	%Colorblind.icon = green if Globals.colorblind_mode else red
 	
 func _ready():
 	update()
@@ -57,3 +62,7 @@ func _on_top_name_text_changed() -> void:
 
 func _on_left_name_text_changed() -> void:
 	Globals.player_names[Globals.Land.LEFT] = %LeftName.text
+
+func _on_colorblind_toggled(toggled_on: bool) -> void:
+	Globals.colorblind_mode = toggled_on
+	update()

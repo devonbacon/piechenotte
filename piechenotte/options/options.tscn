@@ -36,13 +36,22 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Button2" type="Button" parent="OptsContainer/CenterContainer2/VBoxContainer5"]
+[node name="HBoxContainer" type="HBoxContainer" parent="OptsContainer/CenterContainer2/VBoxContainer5"]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="OptsContainer/CenterContainer2/VBoxContainer5/HBoxContainer"]
 layout_mode = 2
 text = "Back"
 
-[node name="Button" type="Button" parent="OptsContainer/CenterContainer2/VBoxContainer5"]
+[node name="Button" type="Button" parent="OptsContainer/CenterContainer2/VBoxContainer5/HBoxContainer"]
 layout_mode = 2
 text = "Reset"
+
+[node name="Colorblind" type="Button" parent="OptsContainer/CenterContainer2/VBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+text = "Colorblind"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="OptsContainer/CenterContainer2/VBoxContainer5"]
 layout_mode = 2
@@ -167,8 +176,9 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 
-[connection signal="pressed" from="OptsContainer/CenterContainer2/VBoxContainer5/Button2" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="OptsContainer/CenterContainer2/VBoxContainer5/Button" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="OptsContainer/CenterContainer2/VBoxContainer5/HBoxContainer/Button2" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="OptsContainer/CenterContainer2/VBoxContainer5/HBoxContainer/Button" to="." method="_on_reset_pressed"]
+[connection signal="toggled" from="OptsContainer/CenterContainer2/VBoxContainer5/Colorblind" to="." method="_on_colorblind_toggled"]
 [connection signal="value_changed" from="OptsContainer/CenterContainer2/VBoxContainer5/VBoxContainer/PieceCount" to="." method="_on_piece_count_value_changed"]
 [connection signal="value_changed" from="OptsContainer/CenterContainer2/VBoxContainer5/VBoxContainer4/Score" to="." method="_on_score_value_changed"]
 [connection signal="value_changed" from="OptsContainer/CenterContainer2/VBoxContainer5/VBoxContainer2/WhiteCount" to="." method="_on_white_count_value_changed"]
